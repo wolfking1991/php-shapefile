@@ -1,5 +1,5 @@
 {
-    "name": "wolfking1991/php-shapefile",
+    "name": "zenglang91/php-shapefile",
     "description": "PHP library to read and write ESRI Shapefiles, compatible with WKT and GeoJSON",
     "type": "library",
     "keywords": ["shapefile", "shape", "esri", "shp", "dbf", "wkt", "geojson"],
