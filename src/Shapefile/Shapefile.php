@@ -470,7 +470,7 @@ abstract class Shapefile
     const SHX_RECORD_SIZE       = 8;
     /** DBF files constants */
     const DBF_BLANK             = 0x20;
-    const DBF_DEFAULT_CHARSET   = 'ISO-8859-1';
+    const DBF_DEFAULT_CHARSET   = 'GBK';
     const DBF_DELETED_MARKER    = 0x2a;
     const DBF_EOF_MARKER        = 0x1a;
     const DBF_FIELD_TERMINATOR  = 0x0d;
@@ -1273,7 +1273,9 @@ abstract class Shapefile
         }
         
         // Sanitize name and normalize case
-        $name = $this->normalizeDBFFieldNameCase($this->sanitizeDBFFieldName($name));
+        $charset = $this->getCharset();
+        $name = @iconv($charset, 'UTF-8', $name);
+        $name = $this->normalizeDBFFieldNameCase($name);
         
         // Check type
         if (
@@ -1452,22 +1454,6 @@ abstract class Shapefile
      */
     private function sanitizeDBFFieldName($input)
     {
-        if ($input === '') {
-            return $input;
-        }
-        
-        $ret        = substr(preg_replace('/[^a-zA-Z0-9]/', '_', $input), 0, 10);
-        $fieldnames = array_fill_keys(array_keys(array_change_key_case($this->fields, CASE_UPPER)), true);
-        if (isset($fieldnames[strtoupper($ret)])) {
-            $ret = substr($ret, 0, 8) . '_1';
-            while (isset($fieldnames[strtoupper($ret)])) {
-                $n = intval(trim(substr($ret, -2), '_')) + 1;
-                if ($n > 99) {
-                    throw new ShapefileException(Shapefile::ERR_DBF_FIELD_NAME_NOT_VALID, $input);
-                }
-                $ret = substr($ret, 0, -2) . str_pad($n, 2, '_', STR_PAD_LEFT);
-            }
-        }
-        return $ret;
+        return $input;
     }
 }
