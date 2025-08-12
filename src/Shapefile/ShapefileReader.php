@@ -5,7 +5,7 @@
  *
  * @package Shapefile
  * @author  Gaspare Sganga
- * @version 4.0.0dev
+ * @version 3.4.1
  * @license MIT
  * @link    https://gasparesganga.com/labs/php-shapefile/
  */
@@ -83,7 +83,7 @@ class ShapefileReader extends Shapefile implements \Iterator
     /**
      * Constructor.
      *
-     * @param   string|array    $files      Path to SHP file / Array of paths / Array of resource handles / Array of FileInterface instances.
+     * @param   string|array    $files      Path to SHP file / Array of paths / Array of handles of individual files.
      * @param   array           $options    Optional associative array of options.
      */
     public function __construct($files, $options = [])
@@ -168,6 +168,7 @@ class ShapefileReader extends Shapefile implements \Iterator
     }
     
     
+    #[\ReturnTypeWillChange]
     public function rewind()
     {
         $this->current_record = 0;
@@ -175,6 +176,7 @@ class ShapefileReader extends Shapefile implements \Iterator
         $this->next();
     }
     
+    #[\ReturnTypeWillChange]
     public function next()
     {
         ++$this->current_record;
@@ -183,16 +185,19 @@ class ShapefileReader extends Shapefile implements \Iterator
         }
     }
     
+    #[\ReturnTypeWillChange]
     public function current()
     {
         return $this->readCurrentRecord();
     }
-
+    
+    #[\ReturnTypeWillChange]
     public function key()
     {
         return $this->current_record;
     }
-
+    
+    #[\ReturnTypeWillChange]
     public function valid()
     {
         return ($this->current_record !== Shapefile::EOF);
