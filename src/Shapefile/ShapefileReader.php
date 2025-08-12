@@ -330,9 +330,11 @@ class ShapefileReader extends Shapefile implements \Iterator
     {
         $ret = current(unpack('A*', $this->readData($file_type, $length)));
         if ($flag_utf8_encode && $this->getOption(Shapefile::OPTION_DBF_CONVERT_TO_UTF8)) {
+            var_dump($ret);
             $ret = @iconv($this->getCharset(), 'UTF-8', $ret);
             if ($ret === false) {
-                throw new ShapefileException(Shapefile::ERR_DBF_CHARSET_CONVERSION);
+                return '';
+                // throw new ShapefileException(Shapefile::ERR_DBF_CHARSET_CONVERSION);
             }
         }
         return trim($ret);

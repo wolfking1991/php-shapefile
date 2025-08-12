@@ -470,7 +470,7 @@ abstract class Shapefile
     const SHX_RECORD_SIZE       = 8;
     /** DBF files constants */
     const DBF_BLANK             = 0x20;
-    const DBF_DEFAULT_CHARSET   = 'GBK';
+    const DBF_DEFAULT_CHARSET   = 'ISO-8859-1';
     const DBF_DELETED_MARKER    = 0x2a;
     const DBF_EOF_MARKER        = 0x1a;
     const DBF_FIELD_TERMINATOR  = 0x0d;
@@ -1273,8 +1273,7 @@ abstract class Shapefile
         }
         
         // Sanitize name and normalize case
-        $charset = $this->getCharset();
-        $name = @iconv($charset, 'UTF-8', $name);
+        $name = @iconv('GBK', 'UTF-8', $name);
         $name = $this->normalizeDBFFieldNameCase($name);
         
         // Check type
